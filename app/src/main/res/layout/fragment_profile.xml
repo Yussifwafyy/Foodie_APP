@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".fragments.ProfileFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Profile Image -->
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ffff"
+            tools:ignore="ContentDescription" />
+
+        <!-- Profile Name -->
+        <TextView
+            android:id="@+id/profname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp"
+            android:text="Youssef Wafy"
+            android:fontFamily="@font/myfont"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold" />
+
+        <!-- Profile Email -->
+        <TextView
+            android:id="@+id/profileEmailTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="24dp"
+            android:text="yussifwafyy14@gmail.com"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <!-- Profile Bio or Status -->
+        <TextView
+            android:id="@+id/profileBioTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="Signed in with Google"
+            android:fontFamily="@font/myfont"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <!-- Followers/Following Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+        </LinearLayout>
+
+        <!-- Divider Line -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
+
+        <!-- Edit Profile Button -->
+        <Button
+            android:id="@+id/btnSignOut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Sign Out"
+            android:fontFamily="@font/myfont"
+            android:backgroundTint="@color/g_black"
+            android:textAllCaps="false" />
+
+        <!-- Change Password Button -->
+        <TextView
+            android:id="@+id/changePasswordTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:padding="12dp"
+            android:text="Change Password"
+            android:fontFamily="@font/myfont"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?android:attr/textColorPrimary"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center_vertical" />
+
+        <!-- Report a Bug -->
+        <TextView
+            android:id="@+id/logoutTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:padding="12dp"
+            android:text="Report a bug"
+            android:fontFamily="@font/myfont"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <!-- Divider Line -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
+
+        <!-- Settings Button -->
+        <Button
+            android:id="@+id/btnSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Settings"
+            android:fontFamily="@font/myfont"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/g_black" />
+
+        <!-- Social Media Links -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/facebookLink"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_facebook"
+                android:layout_marginEnd="16dp"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/twitterLink"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_linkedin"
+                android:layout_marginEnd="16dp"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/instagramLink"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_instagram"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
+        <!-- Posts/Activity Section -->
+        <TextView
+            android:id="@+id/postsTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:padding="12dp"
+            android:text="Recent Activity"
+            android:fontFamily="@font/myfont"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/noPostsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="No recent activity to show"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <!-- All Rights Reserved -->
+        <TextView
+            android:id="@+id/rights"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:padding="12dp"
+            android:text="All rights Reserved 2024 ©"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?android:attr/textColorPrimary" />
+
+    </LinearLayout>
+
+</ScrollView>
