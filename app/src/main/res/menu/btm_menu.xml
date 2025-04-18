@@ -9,6 +9,11 @@
     <item android:title="Profile"
         android:icon="@drawable/ic_person"
         android:id="@+id/categoriesFragment"/>
+    <item
+        android:id="@+id/chatBotFragment"
+        android:icon="@drawable/ic_chat"
+        android:title="chat"/>
+
 
 
 </menu>

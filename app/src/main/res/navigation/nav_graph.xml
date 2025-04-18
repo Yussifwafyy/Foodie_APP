@@ -29,4 +29,10 @@
         android:name="com.example.foodieapp.fragments.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/chatBotFragment"
+        android:name="com.example.foodieapp.fragments.ChatBotFragment"
+        android:label="ChatBot"
+        tools:layout="@layout/fragment_chatbot" />
+
 </navigation>
