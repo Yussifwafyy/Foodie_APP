@@ -7,5 +7,4 @@ object MealData {
         return meal.strYoutube.toString()
     }
 
-    // Add more functions as needed to manage the data
 }

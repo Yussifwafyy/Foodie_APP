@@ -1,73 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/chatbotLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <!-- عنوان الشاشة -->
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="شات بوت - خطة الأسبوع"
-        android:textSize="20sp"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".fragments.ChatBotFragment">
 
-    <!-- مدخل الميزانية -->
-    <EditText
-        android:id="@+id/et_budget"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="ادخل ميزانيتك (جنيه)"
-        android:inputType="number"
-        android:padding="10dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="8dp">
 
-    <!-- مدخل عدد الأشخاص -->
-    <EditText
-        android:id="@+id/et_people"
-        android:layout_width="0dp"
+        <EditText
+            android:id="@+id/et_budget"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="Budget"
+            android:inputType="number"
+            android:layout_marginEnd="8dp"/>
+
+        <EditText
+            android:id="@+id/et_people"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint=" Number Of Persons"
+            android:inputType="number"/>
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinner_diet"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="عدد الأشخاص"
-        android:inputType="number"
-        android:padding="10dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/et_budget"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:layout_marginBottom="8dp"
+        android:entries="@array/diet_types"/>
 
-    <!-- زر توليد الخطة -->
     <Button
         android:id="@+id/btn_generate"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="توليد الخطة"
-        android:textColor="@android:color/white"
-        android:background="@color/teal_200"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/et_people"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:text=" Generate New Weekly Plan "
+        android:layout_marginBottom="8dp"/>
 
-    <!-- RecyclerView لعرض الرسائل -->
+    <Button
+        android:id="@+id/btn_view_plan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="  Weekly Plan"
+        android:layout_marginBottom="12dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/btn_generate"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_weight="1"
+        android:overScrollMode="never"
+        android:scrollbars="vertical"/>
+</LinearLayout>

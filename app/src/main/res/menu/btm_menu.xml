@@ -12,7 +12,7 @@
     <item
         android:id="@+id/chatBotFragment"
         android:icon="@drawable/ic_chat"
-        android:title="chat"/>
+        android:title="Chat"/>
 
 
 

@@ -32,7 +32,17 @@
     <fragment
         android:id="@+id/chatBotFragment"
         android:name="com.example.foodieapp.fragments.ChatBotFragment"
-        android:label="ChatBot"
-        tools:layout="@layout/fragment_chatbot" />
+        android:label="Chat Bot"
+        tools:layout="@layout/fragment_chatbot">
+        <action
+            android:id="@+id/action_chatBotFragment_to_weeklyPlanFragment"
+            app:destination="@id/weeklyPlanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/weeklyPlanFragment"
+        android:name="com.example.foodieapp.fragments.WeeklyPlanFragment"
+        android:label="Weekly Plan"
+        tools:layout="@layout/fragment_week_plan" />
+
 
 </navigation>

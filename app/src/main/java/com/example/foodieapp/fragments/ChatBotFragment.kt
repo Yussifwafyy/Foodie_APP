@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodieapp.R
@@ -14,68 +15,100 @@ import com.example.foodieapp.R
 class ChatBotFragment : Fragment() {
 
     data class Ingredient(val name: String, val quantityPerPerson: Int)
-    data class Recipe(val name: String, val ingredients: List<Ingredient>, val price: Int)
-    data class FoodItem(val name: String, val price: Int)
+    data class Recipe(val name: String, val ingredients: List<Ingredient>, val price: Int, val isVegetarian: Boolean)
     data class ChatMessage(val content: String, val isBotMessage: Boolean)
 
     private lateinit var budgetInput: EditText
     private lateinit var peopleInput: EditText
     private lateinit var generateButton: Button
+    private lateinit var dietSpinner: Spinner
     private lateinit var recyclerView: RecyclerView
     private lateinit var chatAdapter: ChatAdapter
+    private lateinit var viewPlanButton: Button
 
-    private val foodItems = listOf(
-        FoodItem("رز", 20), FoodItem("مكرونة", 15), FoodItem("عدس", 10),
-        FoodItem("بيض", 18), FoodItem("فول", 10), FoodItem("جبنة", 12),
-        FoodItem("عيش", 5), FoodItem("سجق", 40), FoodItem("لحمة", 70),
-        FoodItem("بصل", 5), FoodItem("طماطم", 8), FoodItem("زيت", 10),
-        FoodItem("ملح", 2), FoodItem("سمنة", 10)
-    )
+    private val messages = mutableListOf<ChatMessage>()
 
     private val recipes = listOf(
         Recipe("كشري", listOf(
             Ingredient("عدس", 100), Ingredient("رز", 100), Ingredient("بصل", 50),
             Ingredient("زيت", 20), Ingredient("ملح", 5)
-        ), 30),
+        ), 30, true),
         Recipe("بيض بالطماطم", listOf(
-            Ingredient("بيض", 2), Ingredient("طماطم", 50), Ingredient("زيت", 10), Ingredient("ملح", 5)
-        ), 15),
+            Ingredient("بيض", 2), Ingredient("طماطم", 50),
+            Ingredient("زيت", 10), Ingredient("ملح", 5)
+        ), 15, true),
         Recipe("مكرونة بالصلصة", listOf(
-            Ingredient("مكرونة", 100), Ingredient("طماطم", 70), Ingredient("زيت", 10), Ingredient("ملح", 5)
-        ), 25),
+            Ingredient("مكرونة", 100), Ingredient("طماطم", 70),
+            Ingredient("زيت", 10), Ingredient("ملح", 5)
+        ), 25, true),
         Recipe("فول بالطماطم", listOf(
-            Ingredient("فول", 100), Ingredient("طماطم", 50), Ingredient("زيت", 10), Ingredient("ملح", 5)
-        ), 20),
+            Ingredient("فول", 100), Ingredient("طماطم", 50),
+            Ingredient("زيت", 10), Ingredient("ملح", 5)
+        ), 20, true),
         Recipe("بيض مقلي", listOf(
-            Ingredient("بيض", 2), Ingredient("زيت", 10), Ingredient("ملح", 3)
-        ), 10),
+            Ingredient("بيض", 2), Ingredient("زيت", 10),
+            Ingredient("ملح", 3)
+        ), 10, true),
         Recipe("عيش بالجبنة", listOf(
             Ingredient("عيش", 1), Ingredient("جبنة", 50)
-        ), 25),
+        ), 25, true),
         Recipe("مكرونة بالسجق", listOf(
-            Ingredient("مكرونة", 100), Ingredient("سجق", 70), Ingredient("بصل", 30), Ingredient("زيت", 10), Ingredient("ملح", 5)
-        ), 40),
+            Ingredient("مكرونة", 100), Ingredient("سجق", 70),
+            Ingredient("بصل", 30), Ingredient("زيت", 10),
+            Ingredient("ملح", 5)
+        ), 40, false),
         Recipe("رز باللحمة", listOf(
-            Ingredient("رز", 100), Ingredient("لحمة", 100), Ingredient("بصل", 30), Ingredient("زيت", 10), Ingredient("ملح", 5)
-        ), 60),
+            Ingredient("رز", 100), Ingredient("لحمة", 100),
+            Ingredient("بصل", 30), Ingredient("زيت", 10),
+            Ingredient("ملح", 5)
+        ), 60, false),
         Recipe("لحمة بالبصل", listOf(
-            Ingredient("لحمة", 150), Ingredient("بصل", 50), Ingredient("زيت", 10), Ingredient("ملح", 5)
-        ), 80),
+            Ingredient("لحمة", 150), Ingredient("بصل", 50),
+            Ingredient("زيت", 10), Ingredient("ملح", 5)
+        ), 80, false),
         Recipe("كبسة بالفراخ", listOf(
-            Ingredient("رز", 100), Ingredient("فراخ", 150), Ingredient("طماطم", 50), Ingredient("زيت", 10), Ingredient("ملح", 5)
-        ), 85),
+            Ingredient("رز", 100), Ingredient("فراخ", 150),
+            Ingredient("طماطم", 50), Ingredient("زيت", 10),
+            Ingredient("ملح", 5)
+        ), 85, false),
         Recipe("طاجن بطاطس باللحمة", listOf(
-            Ingredient("لحمة", 150), Ingredient("بطاطس", 200), Ingredient("بصل", 50), Ingredient("زيت", 10), Ingredient("ملح", 5)
-        ), 75),
+            Ingredient("لحمة", 150), Ingredient("بطاطس", 200),
+            Ingredient("بصل", 50), Ingredient("زيت", 10),
+            Ingredient("ملح", 5)
+        ), 75, false),
         Recipe("مكرونة بالبشاميل", listOf(
-            Ingredient("مكرونة", 100), Ingredient("لبن", 100), Ingredient("زبدة", 50), Ingredient("دقيق", 20), Ingredient("ملح", 5)
-        ), 40),
+            Ingredient("مكرونة", 100), Ingredient("لبن", 100),
+            Ingredient("زبدة", 50), Ingredient("دقيق", 20),
+            Ingredient("ملح", 5)
+        ), 40, true),
         Recipe("فتة لحمة", listOf(
-            Ingredient("لحمة", 200), Ingredient("عيش", 1), Ingredient("زيت", 10), Ingredient("ملح", 5)
-        ), 70)
+            Ingredient("لحمة", 200), Ingredient("عيش", 1),
+            Ingredient("زيت", 10), Ingredient("ملح", 5)
+        ), 70, false),
+        Recipe("بيتزا خضار", listOf(
+            Ingredient("دقيق", 100), Ingredient("جبنة", 50),
+            Ingredient("طماطم", 50), Ingredient("زيت", 10)
+        ), 35, true),
+        Recipe("ملوخية بالأرز", listOf(
+            Ingredient("ملوخية", 100), Ingredient("رز", 100),
+            Ingredient("زيت", 10), Ingredient("ثوم", 20),
+            Ingredient("ملح", 5)
+        ), 30, true),
+        Recipe("فطير مشلتت", listOf(
+            Ingredient("دقيق", 200), Ingredient("سمنة", 50),
+            Ingredient("ملح", 5)
+        ), 45, true),
+        Recipe("بط بالفريك", listOf(
+            Ingredient("بط", 200), Ingredient("فريك", 150),
+            Ingredient("بصل", 50), Ingredient("زيت", 10),
+            Ingredient("ملح", 5)
+        ), 95, false),
+        Recipe("مندي لحم", listOf(
+            Ingredient("رز", 150), Ingredient("لحمة", 200),
+            Ingredient("بصل", 50), Ingredient("زيت", 10),
+            Ingredient("ملح", 5)
+        ), 90, false)
     )
-
-    private val messages = mutableListOf<ChatMessage>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,86 +119,142 @@ class ChatBotFragment : Fragment() {
         budgetInput = view.findViewById(R.id.et_budget)
         peopleInput = view.findViewById(R.id.et_people)
         generateButton = view.findViewById(R.id.btn_generate)
+        dietSpinner = view.findViewById(R.id.spinner_diet)
         recyclerView = view.findViewById(R.id.recyclerView)
+        viewPlanButton = view.findViewById(R.id.btn_view_plan)
 
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        chatAdapter = ChatAdapter(messages)
-        recyclerView.adapter = chatAdapter
-
-        generateButton.setOnClickListener {
-            val budgetStr = budgetInput.text.toString().trim()
-            val peopleStr = peopleInput.text.toString().trim()
-
-            if (budgetStr.isEmpty() || peopleStr.isEmpty()) {
-                Toast.makeText(requireContext(), "من فضلك أدخل الميزانية وعدد الأفراد", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            val budget = budgetStr.toIntOrNull()
-            val people = peopleStr.toIntOrNull()
-
-            if (budget == null || budget <= 0) {
-                Toast.makeText(requireContext(), "أدخل ميزانية صحيحة (مثلاً 100)", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            if (people == null || people <= 0) {
-                Toast.makeText(requireContext(), "أدخل عدد أفراد صحيح (مثلاً 2)", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            val output = generateWeeklyPlan(budget, people)
-            addMessageToChat("خطة الأسبوع:", true)
-            addMessageToChat(output, true)
-            savePlanToPrefs(requireContext(), output)
-        }
-
+        setupRecyclerView()
+        setupDietSpinner()
+        setupButtons()
 
         return view
     }
 
-    private fun generateWeeklyPlan(budget: Int, people: Int): String {
+    private fun setupRecyclerView() {
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        chatAdapter = ChatAdapter(messages)
+        recyclerView.adapter = chatAdapter
+    }
+
+    private fun setupDietSpinner() {
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.diet_types,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            dietSpinner.adapter = adapter
+        }
+    }
+
+    private fun setupButtons() {
+        generateButton.setOnClickListener {
+            val budget = budgetInput.text.toString().toIntOrNull() ?: 0
+            val people = peopleInput.text.toString().toIntOrNull() ?: 1
+            val isVegetarian = dietSpinner.selectedItem.toString() == "Vegeterian"
+
+            if (budget <= 0 || people <= 0) {
+                showToast("من فضلك أدخل ميزانية وعدد أفراد صحيحين")
+                return@setOnClickListener
+            }
+
+            generateAndDisplayPlan(budget, people, isVegetarian)
+        }
+
+        viewPlanButton.setOnClickListener {
+            viewSavedPlan()
+        }
+    }
+
+    private fun generateAndDisplayPlan(budget: Int, people: Int, isVegetarian: Boolean) {
+        val plan = generateWeeklyPlan(budget, people, isVegetarian)
+        addMessageToChat("خطة الأسبوع:", true)
+        addMessageToChat(plan, true)
+        savePlan(plan, isVegetarian)
+        showToast("تم حفظ الخطة الأسبوعية!")
+    }
+
+    private fun generateWeeklyPlan(budget: Int, people: Int, isVegetarian: Boolean): String {
         val dailyBudget = budget / 7
+
+        val filteredRecipes = if (isVegetarian) {
+            recipes.filter { recipe ->
+                recipe.isVegetarian && !containsMeat(recipe.ingredients)
+            }.takeIf { it.isNotEmpty() }
+                ?: return "لا توجد وصفات نباتية متاحة تناسب الميزانية"
+        } else {
+            recipes
+        }
+
+        val (affordable, expensive) = filteredRecipes.partition { it.price <= dailyBudget }
         val weeklyPlan = mutableListOf<Recipe>()
         var remainingBudget = budget
+        var attempts = 0
+        val maxAttempts = 100
 
-        val expensiveRecipes = recipes.filter { it.price > dailyBudget }
-        val affordableRecipes = recipes.filter { it.price <= dailyBudget }
+        while (weeklyPlan.size < 7 && attempts < maxAttempts) {
+            attempts++
+            val available = when {
+                remainingBudget >= dailyBudget && affordable.isNotEmpty() -> affordable
+                else -> expensive.filter { it.price <= remainingBudget }
+            }
 
-        for (i in 0 until 7) {
-            if (i < expensiveRecipes.size && remainingBudget >= expensiveRecipes[i].price) {
-                weeklyPlan.add(expensiveRecipes[i])
-                remainingBudget -= expensiveRecipes[i].price
-            } else {
-                val selectedRecipe = affordableRecipes.random()
-                weeklyPlan.add(selectedRecipe)
-                remainingBudget -= selectedRecipe.price
+            if (available.isEmpty()) break
+
+            val recipe = available.random()
+            if (remainingBudget >= recipe.price) {
+                weeklyPlan.add(recipe)
+                remainingBudget -= recipe.price
             }
         }
 
-        val shoppingMap = mutableMapOf<String, Int>()
-        weeklyPlan.forEach { recipe ->
-            recipe.ingredients.forEach { ingredient ->
-                val total = ingredient.quantityPerPerson * people
-                shoppingMap[ingredient.name] = shoppingMap.getOrDefault(ingredient.name, 0) + total
+        if (weeklyPlan.isEmpty()) {
+            return "لا يمكن إنشاء خطة بهذه الميزانية (${budget} جنيه لـ ${people} أشخاص)"
+        }
+
+        val shoppingList = weeklyPlan.flatMap { recipe ->
+            recipe.ingredients.map { ingredient ->
+                ingredient.name to (ingredient.quantityPerPerson * people)
             }
-        }
-
-        val weekPlanText = weeklyPlan.mapIndexed { index, recipe ->
-            "- يوم ${index + 1}: ${recipe.name} - (${recipe.price} جنيه)"
-        }.joinToString("\n")
-
-        val shoppingListText = shoppingMap.entries.joinToString("\n") {
-            "- ${it.key}: ${it.value} جرام/عدد"
-        }
+        }.groupBy({ it.first }, { it.second })
+            .mapValues { (_, values) -> values.sum() }
 
         return """
-            🍽️ **خطة الأسبوع (${budget} جنيه - ${people} أفراد):**
-            $weekPlanText
-
-            🧾 **لستة المشتريات:**
-            $shoppingListText
+            🍽️ خطة الأسبوع (${if (isVegetarian) "نباتي" else "عادي"})
+            الميزانية: ${budget} جنيه | الأفراد: ${people}
+            المتبقي: ${remainingBudget} جنيه
+            
+            الوجبات:
+            ${weeklyPlan.mapIndexed { i, r -> "${i + 1}. ${r.name} (${r.price} جنيه)" }.joinToString("\n")}
+            
+            🛒 لستة المشتريات:
+            ${shoppingList.map { (name, qty) -> "- $name: $qty جرام" }.joinToString("\n")}
         """.trimIndent()
+    }
+
+    private fun containsMeat(ingredients: List<Ingredient>): Boolean {
+        val meatKeywords = listOf("لحم", "لحمة", "سجق", "فراخ", "بط", "لحوم", "ستيك", "برجر")
+        return ingredients.any { ing -> meatKeywords.any { ing.name.contains(it) } }
+    }
+
+    private fun savePlan(plan: String, isVegetarian: Boolean) {
+        requireContext().getSharedPreferences("meal_plan", Context.MODE_PRIVATE)
+            .edit()
+            .putString("weekly_plan", plan)
+            .putBoolean("is_vegetarian", isVegetarian)
+            .apply()
+    }
+
+    private fun viewSavedPlan() {
+        val weeklyPlan = requireContext()
+            .getSharedPreferences("meal_plan", Context.MODE_PRIVATE)
+            .getString("weekly_plan", "")
+
+        if (!weeklyPlan.isNullOrEmpty()) {
+            findNavController().navigate(R.id.action_chatBotFragment_to_weeklyPlanFragment)
+        } else {
+            showToast("من فضلك أنشئ خطة أولاً.")
+        }
     }
 
     private fun addMessageToChat(message: String, isBotMessage: Boolean) {
@@ -174,34 +263,30 @@ class ChatBotFragment : Fragment() {
         recyclerView.scrollToPosition(messages.size - 1)
     }
 
-    private fun savePlanToPrefs(context: Context, plan: String) {
-        val prefs = context.getSharedPreferences("meal_plan", Context.MODE_PRIVATE)
-        prefs.edit().putString("weekly_plan", plan).apply()
-    }
-}
-
-class ChatAdapter(private val messages: List<ChatBotFragment.ChatMessage>) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.chat_item, parent, false)
-        return ChatViewHolder(view)
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
-        val message = messages[position]
-        holder.messageTextView.text = message.content
-
-        // Set different background color based on sender (bot/user)
-        if (message.isBotMessage) {
-            holder.messageTextView.setBackgroundResource(R.drawable.bot_message_background)
-        } else {
-            holder.messageTextView.setBackgroundResource(R.drawable.user_message_background)
+    class ChatAdapter(private val messages: List<ChatMessage>) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.chat_item, parent, false)
+            return ChatViewHolder(view)
         }
-    }
 
-    override fun getItemCount(): Int = messages.size
+        override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
+            val message = messages[position]
+            holder.messageTextView.text = message.content
+            holder.messageTextView.setBackgroundResource(
+                if (message.isBotMessage) R.drawable.bot_message_background
+                else R.drawable.user_message_background
+            )
+        }
 
-    class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val messageTextView: TextView = itemView.findViewById(R.id.tv_message)
+        override fun getItemCount(): Int = messages.size
+
+        class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val messageTextView: TextView = itemView.findViewById(R.id.tv_message)
+        }
     }
 }
