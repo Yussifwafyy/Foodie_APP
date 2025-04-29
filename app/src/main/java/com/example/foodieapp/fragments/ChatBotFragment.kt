@@ -168,14 +168,13 @@ class ChatBotFragment : Fragment() {
 
     private fun generateAndDisplayPlan(budget: Int, people: Int, isVegetarian: Boolean) {
         val plan = generateWeeklyPlan(budget, people, isVegetarian)
-        addMessageToChat("خطة الأسبوع:", true)
-        addMessageToChat(plan, true)
+        addMessageToChat(plan, isBotMessage = true)
         savePlan(plan, isVegetarian)
-        showToast("تم حفظ الخطة الأسبوعية!")
     }
 
     private fun generateWeeklyPlan(budget: Int, people: Int, isVegetarian: Boolean): String {
-        val dailyBudget = budget / 7
+        val daysOfWeek = listOf("الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت")
+        val adjustedBudget = budget
 
         val filteredRecipes = if (isVegetarian) {
             recipes.filter { recipe ->
@@ -186,49 +185,66 @@ class ChatBotFragment : Fragment() {
             recipes
         }
 
-        val (affordable, expensive) = filteredRecipes.partition { it.price <= dailyBudget }
-        val weeklyPlan = mutableListOf<Recipe>()
-        var remainingBudget = budget
-        var attempts = 0
-        val maxAttempts = 100
+        val adjustedRecipes = filteredRecipes.map { recipe ->
+            recipe.copy(
+                ingredients = recipe.ingredients.map { ingredient ->
+                    ingredient.copy(quantityPerPerson = ingredient.quantityPerPerson * people)
+                },
+                price = recipe.price * people
+            )
+        }
 
-        while (weeklyPlan.size < 7 && attempts < maxAttempts) {
-            attempts++
+        val dailyBudget = adjustedBudget / 7
+        val (affordable, expensive) = adjustedRecipes.partition { it.price <= dailyBudget }
+        val weeklyPlan = mutableListOf<Recipe>()
+        var remainingBudget = adjustedBudget
+
+        val selectedRecipes = mutableSetOf<String>()
+        val shuffledAffordable = affordable.shuffled()
+        val shuffledExpensive = expensive.shuffled()
+
+        for (i in 0 until 7) {
             val available = when {
-                remainingBudget >= dailyBudget && affordable.isNotEmpty() -> affordable
-                else -> expensive.filter { it.price <= remainingBudget }
+                remainingBudget >= dailyBudget && shuffledAffordable.isNotEmpty() -> shuffledAffordable
+                else -> shuffledExpensive.filter { it.price <= remainingBudget }
             }
 
             if (available.isEmpty()) break
 
-            val recipe = available.random()
+            val recipe = available.firstOrNull { !selectedRecipes.contains(it.name) } ?: available.random()
+
             if (remainingBudget >= recipe.price) {
                 weeklyPlan.add(recipe)
+                selectedRecipes.add(recipe.name)
                 remainingBudget -= recipe.price
             }
         }
 
         if (weeklyPlan.isEmpty()) {
-            return "لا يمكن إنشاء خطة بهذه الميزانية (${budget} جنيه لـ ${people} أشخاص)"
+            return "لا يمكن إنشاء خطة بهذه الميزانية لـ $people أشخاص"
         }
 
         val shoppingList = weeklyPlan.flatMap { recipe ->
             recipe.ingredients.map { ingredient ->
-                ingredient.name to (ingredient.quantityPerPerson * people)
+                ingredient.name to ingredient.quantityPerPerson
             }
         }.groupBy({ it.first }, { it.second })
             .mapValues { (_, values) -> values.sum() }
 
+        val mealsByDay = weeklyPlan.mapIndexed { index, recipe ->
+            "${daysOfWeek[index]}: ${recipe.name} (${recipe.price} جنيه لـ $people أشخاص)"
+        }.joinToString("\n")
+
         return """
-            🍽️ خطة الأسبوع (${if (isVegetarian) "نباتي" else "عادي"})
-            الميزانية: ${budget} جنيه | الأفراد: ${people}
-            المتبقي: ${remainingBudget} جنيه
-            
-            الوجبات:
-            ${weeklyPlan.mapIndexed { i, r -> "${i + 1}. ${r.name} (${r.price} جنيه)" }.joinToString("\n")}
-            
-            🛒 لستة المشتريات:
-            ${shoppingList.map { (name, qty) -> "- $name: $qty جرام" }.joinToString("\n")}
+        🍽️ خطة الأسبوع (${if (isVegetarian) "نباتي" else "عادي"})
+        الميزانية الإجمالية: ${adjustedBudget} جنيه ($people أشخاص)
+        المتبقي: ${remainingBudget} جنيه
+
+        الوجبات:
+        $mealsByDay
+
+        🛒 لستة المشتريات (لـ $people أشخاص):
+        ${shoppingList.map { (name, qty) -> "- $name: $qty جرام" }.joinToString("\n")}
         """.trimIndent()
     }
 
