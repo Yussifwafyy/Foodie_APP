@@ -22,7 +22,7 @@ class WeeklyPlanFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_week_plan, container, false)
 
         weekPlanTextView = view.findViewById(R.id.tv_week_plan)
-        shoppingListTextView = view.findViewById(R.id.tv_shopping_list)
+        //shoppingListTextView = view.findViewById(R.id.tv_shopping_list)
         backButton = view.findViewById(R.id.btn_back)
 
         backButton.setOnClickListener {

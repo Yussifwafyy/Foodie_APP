@@ -5,18 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity"
-    android:id="@+id/root_home">
-    <!--    <pl.droidsonroids.gif.GifImageView-->
-    <!--        android:id="@+id/loading_gif"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        android:src="@drawable/loading_gif"-->
-    <!--        android:visibility="gone"/>-->
-
+    android:id="@+id/root_home"
+    android:background="@color/orange">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -26,20 +16,21 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/contraint"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <!-- Header Section -->
                 <LinearLayout
                     android:id="@+id/header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
@@ -58,20 +49,20 @@
                     <ImageView
                         android:id="@+id/img_search"
                         android:layout_width="32dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="bottom|center"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
                         android:layout_marginStart="180dp"
-                        android:scaleType="centerCrop"
                         android:src="@drawable/ic_search" />
                 </LinearLayout>
 
+                <!-- Meal of the Day Section -->
                 <TextView
                     android:id="@+id/tv_mofd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/myfont"
-                    android:text="Meal of the day!"
+                    android:text="Suggested Meals!"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -85,28 +76,47 @@
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="25dp"
-                    android:elevation="2dp"
-                    app:cardCornerRadius="10dp"
-                    app:cardUseCompatPadding="true"
+                    android:elevation="4dp"
+                    app:cardCornerRadius="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_mofd">
 
-                    <ImageView
-                        android:id="@+id/img_random_meal"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:background="@color/accent" />
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/img_random_meal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/meal_place" />
+
+                        <TextView
+                            android:id="@+id/tv_meal_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_margin="16dp"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:shadowColor="@color/black"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="2"/>
+                    </RelativeLayout>
                 </androidx.cardview.widget.CardView>
 
+                <!-- Suggested Items Section -->
                 <TextView
                     android:id="@+id/tv_suggested"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="25dp"
                     android:fontFamily="@font/myfont"
-                    android:text="Suggested items"
+                    android:text="Sea items"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -116,17 +126,21 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rec_view_meals_popular"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_suggested" />
 
+                <!-- Categories Section -->
                 <TextView
                     android:id="@+id/tv_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="25dp"
                     android:fontFamily="@font/myfont"
                     android:text="Categories"
                     android:textColor="@color/black"
@@ -139,27 +153,26 @@
                     android:id="@+id/category_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginEnd="25dp"
-                    android:elevation="2dp"
-                    app:cardCornerRadius="10dp"
-                    app:cardPreventCornerOverlap="false"
-                    app:cardUseCompatPadding="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="20dp"
+                    android:elevation="4dp"
+                    app:cardCornerRadius="15dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_category"
-                    >
+                    app:layout_constraintTop_toBottomOf="@id/tv_category">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rec_view_Categories"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scrollbars="none" />
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:spanCount="2" />
                 </androidx.cardview.widget.CardView>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
