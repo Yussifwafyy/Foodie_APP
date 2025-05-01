@@ -20,7 +20,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ffff"
+            android:src="@drawable/userphoto1"
             tools:ignore="ContentDescription" />
 
         <!-- Profile Name -->
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="8dp"
-            android:text="Youssef Wafy"
+            android:text=" "
             android:fontFamily="@font/myfont"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold" />
@@ -42,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="24dp"
+            android:fontFamily="@font/myfont"
             android:text="yussifwafyy14@gmail.com"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -85,18 +86,6 @@
             android:textAllCaps="false" />
 
         <!-- Change Password Button -->
-        <TextView
-            android:id="@+id/changePasswordTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:padding="12dp"
-            android:text="Change Password"
-            android:fontFamily="@font/myfont"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="?android:attr/textColorPrimary"
-            android:background="?android:attr/selectableItemBackground"
-            android:gravity="center_vertical" />
 
         <!-- Report a Bug -->
         <TextView
@@ -190,6 +179,7 @@
             android:gravity="center_vertical"
             android:padding="12dp"
             android:text="All rights Reserved 2024 ©"
+            android:fontFamily="@font/myfont"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="?android:attr/textColorPrimary" />
 

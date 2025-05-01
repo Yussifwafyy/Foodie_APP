@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/myfont"
                         android:text="Home"
-                        android:textColor="@color/accent"
+                        android:textColor="@color/g_black"
                         android:textSize="25sp"
                         android:textStyle="bold" />
 
@@ -51,7 +51,7 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_gravity="center"
-                        android:layout_marginStart="180dp"
+                        android:layout_marginStart="240dp"
                         android:src="@drawable/ic_search" />
                 </LinearLayout>
 
@@ -62,10 +62,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/myfont"
-                    android:text="Suggested Meals!"
+                    android:text="Suggested Meals !"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
+                    android:layout_marginLeft="80dp"
                     app:layout_constraintStart_toStartOf="@+id/header"
                     app:layout_constraintTop_toBottomOf="@id/header" />
 
@@ -116,10 +117,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
                     android:fontFamily="@font/myfont"
-                    android:text="Sea items"
+                    android:text="Sea Items"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
+                    android:layout_marginLeft="50dp"
                     app:layout_constraintStart_toStartOf="@id/tv_mofd"
                     app:layout_constraintTop_toBottomOf="@id/random_meal" />
 
@@ -146,6 +148,7 @@
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
+                    android:layout_marginLeft="120dp"
                     app:layout_constraintStart_toStartOf="@id/rec_view_meals_popular"
                     app:layout_constraintTop_toBottomOf="@id/rec_view_meals_popular" />
 

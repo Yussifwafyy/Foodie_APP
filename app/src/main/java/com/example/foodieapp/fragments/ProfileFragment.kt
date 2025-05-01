@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.example.foodieapp.R
 import com.example.foodieapp.activities.SignIn
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -40,10 +42,28 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         btnSignOut = view.findViewById(R.id.btnSignOut)
-        mAuth = Firebase.auth
         profname = view.findViewById(R.id.profname)
-        profname.text = mAuth.currentUser?.displayName
+        val emailTextView: TextView = view.findViewById(R.id.profileEmailTextView)
+        val profileImage: ImageView = view.findViewById(R.id.profImage)
+
+        mAuth = Firebase.auth
+        val user = mAuth.currentUser
+
+        profname.text = user?.displayName
+        emailTextView.text = user?.email
+
+        // Load profile image using Glide (recommended)
+        val photoUrl = user?.photoUrl
+        if (photoUrl != null) {
+            Glide.with(this)
+                .load(photoUrl)
+                .centerCrop()
+                .placeholder(R.drawable.userphoto1) // default if loading fails
+                .into(profileImage)
+        }
+
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -55,6 +75,7 @@ class ProfileFragment : Fragment() {
             signOutAndStartSignInActivity()
         }
     }
+
     private fun signOutAndStartSignInActivity() {
         mAuth.signOut()
         mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity()) {
