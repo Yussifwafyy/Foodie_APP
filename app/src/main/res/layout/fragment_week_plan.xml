@@ -17,6 +17,7 @@
         android:id="@+id/btn_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/myfont"
         android:backgroundTint="@color/g_black"
         android:text="Back" />
 </LinearLayout>
