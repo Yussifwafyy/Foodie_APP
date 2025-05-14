@@ -43,7 +43,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="24dp"
             android:fontFamily="@font/myfont"
-            android:text="yussifwafyy14@gmail.com"
+            android:text=""
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <!-- Profile Bio or Status -->
